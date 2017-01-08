@@ -1,15 +1,40 @@
 package com.aewinformatica.bibliotecadigital.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.aewinformatica.bibliotecadigital.model.Livro;
+import com.aewinformatica.bibliotecadigital.repository.Livros;
 
 @Controller
+@RequestMapping("/livros")
 public class LivrosController {
 	
-	@GetMapping("/livros")
-	public String home(){
+	@Autowired
+	private Livros livros;
+	
+	@GetMapping
+	public ModelAndView home(){
 		
-		return "CadastroLivros";
+		ModelAndView mv = new ModelAndView("CadastroLivros");
+		
+		List<Livro> listaLivros = livros.findAll();
+		
+		mv.addObject("livros",listaLivros);
+		
+		return mv;
+	}
+	
+	@PostMapping
+	public String salvar(Livro livro){
+		livros.save(livro);
+		return "redirect:/livros";
 	}
 
 }
