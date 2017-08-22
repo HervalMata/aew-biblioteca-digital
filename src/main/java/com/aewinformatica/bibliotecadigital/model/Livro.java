@@ -1,9 +1,13 @@
 package com.aewinformatica.bibliotecadigital.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
+
+import org.springframework.util.StringUtils;
 
 @Entity
 public class Livro {
@@ -15,6 +19,75 @@ public class Livro {
 	private String titulo;
 	private String autor;
 	private String nota;
+	
+	private String foto;
+	
+	@Column(name = "content_type")
+	private String contentType;
+	
+	
+	@Transient
+	private boolean novaFoto;
+
+	@Transient
+	private String urlFoto;
+
+	@Transient
+	private String urlThumbnailFoto;
+	
+	
+	
+	public String getFoto() {
+		return foto;
+	}
+	
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+	
+	public String getContentType() {
+		return contentType;
+	}
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
+	
+	
+	public String getFotoOuMock() {
+		return !StringUtils.isEmpty(foto) ? foto : "cerveja-mock.png";
+	}
+
+	public boolean temFoto() {
+		return !StringUtils.isEmpty(this.foto);
+	}
+
+	public boolean isNova() {
+		return codigo == null;
+	}
+
+	public boolean isNovaFoto() {
+		return novaFoto;
+	}
+
+	public void setNovaFoto(boolean novaFoto) {
+		this.novaFoto = novaFoto;
+	}
+
+	public String getUrlFoto() {
+		return urlFoto;
+	}
+
+	public void setUrlFoto(String urlFoto) {
+		this.urlFoto = urlFoto;
+	}
+
+	public String getUrlThumbnailFoto() {
+		return urlThumbnailFoto;
+	}
+
+	public void setUrlThumbnailFoto(String urlThumbnailFoto) {
+		this.urlThumbnailFoto = urlThumbnailFoto;
+	}
 	
 	public Long getCodigo() {
 		return codigo;

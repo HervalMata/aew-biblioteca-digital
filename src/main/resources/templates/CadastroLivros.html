@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:th="http://www.thymeleaf.org">
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
 <link rel="stylesheet" type="text/css"
 	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
 <link rel="stylesheet" type="text/css" th:href="@{/css/custom.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/uikit/uikit.min.css}"/> 
+<link rel="stylesheet" type="text/css" th:href="@{/css/uikit/uikit-rtl.min.css}"/> 
 <title>Cadastro de Livro</title>
 </head>
 <body>
@@ -26,10 +29,15 @@
 		</div>
 
 		<div class="row">
-			<div class="col-md-4" th:each="livro :${livros}">
+			<div class="col-md-4" th:each="livro :${livros}" style="border: 10px;border-color: black;">
+			    
 				<h2 th:text="${livro.titulo}">Tittulo do Livro</h2>
 				<h4 th:text="${livro.autor}">Autor</h4>
 				<p  th:text="${livro.nota}">Nota ou Comentário sobre o Livro</p>
+					<button type="button" class="btn btn-default btn-sm"
+						data-toggle="modal" data-target="#novoLivroModal">
+						<span class="glyphicon glyphicon-pencil"></span>
+					</button>
 			</div>
 		</div>
 
@@ -45,8 +53,11 @@
 					</button>
 					<h4 class="modal-title">Novo Livro</h4>
 				</div>
-				<form action="/livros" method="POST" >
+				<form action="/livros" method="POST" th:object="${livro}" >
 					<div class="modal-body">
+					
+					<input type="hidden" th:field="*{codigo}"/>
+					
 						<div class="form-group">
 							<label class="label-control">Titulo</label> 
 							<input type="text" class="form-control" id="titulo"
@@ -62,6 +73,24 @@
 							<textarea class="form-control" rows="3" id="nota" 
 							name="nota"></textarea>
 						</div>
+						
+				<div class="form-group  col-sm-12">
+					<input type="hidden" th:field="*{foto}">
+					<input type="hidden" th:field="*{contentType}">
+					<input type="hidden" th:field="*{novaFoto}">
+					<input type="hidden" th:field="*{urlFoto}">
+				
+					<label class="control-label">Foto</label>
+					
+					<div class=" foto-upload uk-placeholder uk-text-center js-container-foto-cerveja" th:attr="data-url-fotos=@{/fotos}">
+						<div id="upload-drop" class="bw-upload">
+<!-- 							<img th:src="@{/images/mini-loading.gif}" class="js-img-loading  hidden"/> -->
+							<i class="glyphicon  glyphicon-cloud-upload"></i>
+							<span>Arraste a foto aqui ou </span>
+							<a class="bw-upload-form-file">selecione <input id="upload-select" type="file" accept=".jpg,.jpeg,.png"/></a>
+						</div>
+					</div>
+				</div>
 					</div>
 					<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
@@ -74,12 +103,20 @@
 			<!-- /.modal-content -->
 		</div>
 		<!-- /.modal-dialog -->
+			
 	</div>
 	<!-- /.modal -->
 
 
+<th:block th:replace="/hbs/Foto"></th:block>
 
 	<script th:src="@{/webjars/jquery/jquery.min.js}"></script>
 	<script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+	<script th:src="@{/js/uikit/uikit.min.js}"></script>
+	<script th:src="@{/js/uikit/uikit-icons.min.js}"></script>
+	<script th:src="@{/js/handlebars/handlebars.min.js}"></script>
+	<script th:src="@{/js/upload-foto.js}"></script> 
+
+
 </body>
 </html>
